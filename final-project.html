@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title></title>
+    </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.13/p5.js"></script>
+
+    <script>
+        var amountoflasers = 6;//6 lasers
+        var lasers = [];//holds all laser objects
+
+
+        var squareX = 20;//x pos of player
+        var squareY = 250;//y pos of player
+        var speedX = 10;//sideways speed of player
+        var speedY = 10;//upwards and downwards of player
+        var level = 1;//starting level
+        var speed = 5;//speed of player is 5pixels
+        var laserspot;//spot of lasers when beig shot
+
+        function setup() {//
+            createCanvas(800, 600);//
+            for (i = 0; i <= amountoflasers; i++) {//
+                lasers.push(new Laser());//
+            }
+
+
+        }
+
+
+        function draw() {//
+
+
+            background(255);//
+            textSize(30);//
+            strokeWeight(3);//
+            stroke(0);//
+            text("You are on level: " + level, 10, 40);//
+            strokeWeight(2);//
+            stroke(0);//
+
+            fill(0, 255, 0);//
+            rect(720, 0, 79, 598);//
+
+            fill(255, 255, 0);//
+            strokeWeight(5);//
+            stroke(0);//
+            rect(squareX, squareY, 40, 40);//
+
+            squareX = constrain(squareX, 0, width - 50);//
+            squareY = constrain(squareY, 0, height - 50);//
+
+
+            for (i = 0; i < lasers.length; i++) {//
+
+                lasers[i].move();//
+
+                lasers[i].display();//
+
+                lasers[i].stopped();//
+
+
+            }
+
+
+            if (squareX > 720 && level == 3) {//
+                fill(255);//
+
+
+                stroke(0);//
+                rectMode(CENTER);//
+                rect(400, 300, 180, 60);//
+                fill(0)//
+                strokeWeight(2);//
+
+                textSize(30);//
+                text("You Won!", 337, 310);//
+                noLoop();//
+
+            }
+            else if (squareX > 720) {//
+                squareX = 20;//
+                squareY = 250;//
+
+
+                level += 1;//
+
+                speed += 1;//
+
+            }
+
+        }
+
+        function Laser() {//
+            this.xlaser = laserspot;//
+            this.ylaser = random(height);//
+            this.speed = speed;//
+
+            laserspot = random(40, 700);//
+
+
+
+
+            this.stopped = function() {//
+                if (squareX < this.xlaser + 25 && squareX > this.xlaser - 25 && squareY > this.ylaser - 105 && squareY < this.ylaser + 105) {
+                    squareX = 20;
+
+                    squareY = 250;
+                    level = 1;
+                    speed = 5;
+
+
+                }
+            }
+
+            this.move = function() {
+                this.ylaser += this.speed;
+                if (this.ylaser > height) {
+                    this.ylaser = 0;
+
+
+                }
+            }
+
+            this.display = function() {
+                strokeWeight(7);
+                stroke('rgba(255,0,0,0.25)');
+                fill(200, 0, 0);
+                rect(this.xlaser, this.ylaser, 20, 100);
+
+            }
+        }
+
+
+        function keyPressed() {
+            if (key == "W" || key == "w") {
+                squareY = squareY - speedY;
+            }
+            if (key == "A" || key == "a") {
+                squareX = squareX - speedX;
+            }
+            if (key == "S" || key == "s") {
+                squareY = squareY + speedY;
+            }
+            if (key == "D" || key == "d") {
+                squareX = squareX + speedX;
+            }
+        }
+    </script>
+</head>
+
+<body>
+<form><input TYPE="button" onClick="history.go(0)" value="Reset"></form>
+</body>
+
+</html>
